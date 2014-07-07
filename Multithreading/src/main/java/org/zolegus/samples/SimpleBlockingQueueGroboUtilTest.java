@@ -1,7 +1,7 @@
 package org.zolegus.samples;
 
 public class SimpleBlockingQueueGroboUtilTest {
-
+/*
     private static class MyTestRunnable extends TestRunnable {
         private SimpleBlockingQueue<Integer> queue;
 
@@ -29,4 +29,5 @@ public class SimpleBlockingQueueGroboUtilTest {
         mttr.runTestRunnables(2 * 60 * 1000);
         assertThat(queue.getSize(), is(0));
     }
+    */
 }

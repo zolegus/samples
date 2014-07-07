@@ -3,7 +3,7 @@ package org.zolegus.samples;
 /**
  * Created by zolegus on 7/5/14.
  */
-private static class BlockingThread extends Thread {
+public class BlockingThread extends Thread {
     private SimpleBlockingQueue queue;
     private boolean wasInterrupted = false;
     private boolean reachedAfterGet = false;

@@ -3,7 +3,7 @@ package org.zolegus.samples;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public static class CounterReadWriteLock implements Counter {
+public class CounterReadWriteLock implements Counter {
     private final ReentrantReadWriteLock customerLock = new ReentrantReadWriteLock();
     private final Lock customerWriteLock = customerLock.writeLock();
     private final Lock customerReadLock = customerLock.readLock();
@@ -38,4 +38,5 @@ public static class CounterReadWriteLock implements Counter {
         shippingReadLock.unlock();
         return count;
     }
+}
 

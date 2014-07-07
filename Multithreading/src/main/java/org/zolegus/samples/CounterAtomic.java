@@ -2,7 +2,7 @@ package org.zolegus.samples;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public static class CounterAtomic implements Counter {
+public class CounterAtomic implements Counter {
     private AtomicLong customerCount = new AtomicLong();
     private AtomicLong shippingCount = new AtomicLong();
 

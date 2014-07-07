@@ -1,6 +1,6 @@
 package org.zolegus.samples;
 
-public static class CounterSeparateLock implements Counter {
+public class CounterSeparateLock implements Counter {
     private static final Object customerLock = new Object();
     private static final Object shippingLock = new Object();
     private long customerCount = 0;

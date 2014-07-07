@@ -1,5 +1,5 @@
 package org.zolegus.samples;
-
+/*
 public static class CarRepositoryWithoutCounter implements CarRepository {
     private Map<String, Car> cars = new HashMap<String, Car>();
     private Map<String, Car> trucks = new HashMap<String, Car>();
@@ -30,3 +30,4 @@ public static class CarRepositoryWithoutCounter implements CarRepository {
         }
     }
 }
+*/
