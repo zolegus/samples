@@ -13,12 +13,14 @@ import javax.ws.rs.core.MediaType;
 public class HelloWorldResource {
 
     @GET
+    @Path("text")
     @Produces(MediaType.TEXT_PLAIN)
     public String sayhello() {
         return "text_plain";
     }
 
     @GET
+    @Path("xml")
     @Produces(MediaType.TEXT_XML)
     public String sayXMLHello() {
         return "<?xml version=\"1.0\"?>" + "<hello> text_xml" + "</hello>";
@@ -31,5 +33,4 @@ public class HelloWorldResource {
         return "<html> " + "<title>" + "text_html" + "</title>"
                 + "<body><h1>" + "Hello Jersey" + "</body></h1>" + "</html> ";
     }
-
 }
