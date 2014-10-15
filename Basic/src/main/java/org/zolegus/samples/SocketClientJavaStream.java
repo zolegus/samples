@@ -15,31 +15,31 @@ public class SocketClientJavaStream implements Runnable {
         try {
             server = new ServerSocket(11111);
 //            while (true) {
-                final Socket serverSocket = server.accept();
-                serverSocket.setTcpNoDelay(true);
+                final Socket clientSocket = server.accept();
+                clientSocket.setTcpNoDelay(true);
                 long counter = 0;
-                DataOutputStream serverOut;
+                DataOutputStream outputStream;
                 try {
-                    serverOut = new DataOutputStream(serverSocket.getOutputStream());
+                    outputStream = new DataOutputStream(clientSocket.getOutputStream());
                     for (int i = 0; i < LOOP_COUNT; i++) {
-                        serverOut.writeLong(System.nanoTime());
-                        serverOut.writeLong(counter);
+                        outputStream.writeLong(System.nanoTime());
+                        outputStream.writeLong(counter);
                         counter++;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     try {
-                        serverSocket.close();
+                        clientSocket.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
 //            }
+            server.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static long bytesToLong(byte[] bytes) {
@@ -67,6 +67,7 @@ public class SocketClientJavaStream implements Runnable {
         Thread thread = new Thread(new SocketClientJavaStream(), "Server");
         thread.start();
         System.out.println("Server running...");
+        Thread.sleep(10000);
 
         //Connection code for InputStream, BufferedInputStream, DataInputStream and Buffered DataInputStream
 
