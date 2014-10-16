@@ -1,9 +1,7 @@
 package org.zolegus.samples;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 
 public class SocketClientMultithread implements Runnable{
 
@@ -27,9 +25,12 @@ public class SocketClientMultithread implements Runnable{
                     while (in != -1) {
                         if (in=='?')
                             outputStream.write("WTF!".getBytes());
+                        if (in=='q') {
+                            isServerStopped = true;
+                            break;
+                        }
                         in = inputStream.read();
                     }
-//                    outputStream.writeLong(System.nanoTime());
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
@@ -46,27 +47,28 @@ public class SocketClientMultithread implements Runnable{
         }
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+
+
+    public static void main(String[] args) throws Exception {
 
         Thread serverThread = new Thread(new SocketClientMultithread(), "ServerThread");
         serverThread.start();
 
-        SimpleClientAPI client = new SimpleClientAPI(InetAddress.getLocalHost(), port);
+//        SimpleClientSocketAPI client = new SimpleClientSocketAPI(InetAddress.getLocalHost(), port);
+        SimpleClientNIOAPI client = new SimpleClientNIOAPI(new InetSocketAddress("localhost", port));
+
         Thread clientThread = new Thread(client, "ClientThread");
         clientThread.start();
+
 
         char msg = ' ';
         while(msg != 'x') {
             msg = (char)System.in.read();
             client.sendToServer(msg);
         }
-
         client.disconnect();
-        clientThread.interrupt();
         clientThread.join();
-        isServerStopped = true;
         serverThread.join();
-
     }
 
 }

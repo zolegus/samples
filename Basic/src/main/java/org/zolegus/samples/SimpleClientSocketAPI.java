@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.channels.ClosedByInterruptException;
 
-public class SimpleClientAPI implements Runnable {
+public class SimpleClientSocketAPI implements Runnable {
 
     private Socket socket;
     private boolean isConnected = false;
@@ -16,7 +16,7 @@ public class SimpleClientAPI implements Runnable {
     private InputStream inputStream;
     private OutputStream outputStream;
 
-    public SimpleClientAPI(InetAddress address, int port) {
+    public SimpleClientSocketAPI(InetAddress address, int port) {
         try {
             socket = new Socket(address, port);
             socket.setTcpNoDelay(true);
