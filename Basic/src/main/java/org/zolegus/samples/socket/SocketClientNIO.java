@@ -1,4 +1,4 @@
-package org.zolegus.samples;
+package org.zolegus.samples.socket;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
