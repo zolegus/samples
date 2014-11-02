@@ -18,6 +18,8 @@ public class SimpleByteBufferCopy {
         long[] times = new long[tests];
         long start;
         int count= 0;
+
+
         for (int i = 0; i < tests; i++) {
             start = System.nanoTime();
             while (bbSource.remaining()>0)
@@ -27,7 +29,7 @@ public class SimpleByteBufferCopy {
             bbDestin.clear();
         }
         Arrays.sort(times);
-        System.out.printf("Average latency %d runs for 50/90/99/99.9/99.99%% was %.2f/%.2f/%.2f/%.2f/%.2f us%n",
+        System.out.printf("One byte Average latency %d runs for 50/90/99/99.9/99.99%% was %.2f/%.2f/%.2f/%.2f/%.2f us%n",
                 tests,
                 times[tests / 2] / 1e3,
                 times[tests * 9 / 10] / 1e3,
@@ -48,7 +50,7 @@ public class SimpleByteBufferCopy {
             bbDestin.clear();
         }
         Arrays.sort(times);
-        System.out.printf("Average latency %d runs for 50/90/99/99.9/99.99%% was %.2f/%.2f/%.2f/%.2f/%.2f us%n",
+        System.out.printf("Bytebuffer Average latency %d runs for 50/90/99/99.9/99.99%% was %.2f/%.2f/%.2f/%.2f/%.2f us%n",
                 tests,
                 times[tests / 2] / 1e3,
                 times[tests * 9 / 10] / 1e3,
