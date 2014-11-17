@@ -13,3 +13,13 @@ dependencies {
     compile group: 'net.openhft', name: 'chronicle', version: '3.2.5'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
+idea.workspace.iws.withXml { provider ->
+    def applicationDefaults = provider.node.component.find { it.@name == 'RunManager' }.configuration.find {
+        it.@type == 'Application'
+    }
+    if (applicationDefaults != null) {
+        applicationDefaults.option.find { it.@name == 'VM_PARAMETERS' }.@value = '-Djava.io.tmpdir=./chronicle'
+        applicationDefaults.option.find { it.@name == 'WORKING_DIRECTORY' }.@value = '$PROJECT_DIR$'
+    }
+}
