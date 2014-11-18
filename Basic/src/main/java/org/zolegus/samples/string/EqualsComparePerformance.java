@@ -8,15 +8,14 @@ import java.util.Arrays;
 public class EqualsComparePerformance {
     public static void main(String[] args) throws InterruptedException {
         CharSequence charSequence = "AB";
-        int tests = 100000;
+        int tests = 1000000;
         long[] times = new long[tests];
         long start;
-        int count= 0;
         for (int i = 0; i < tests; i++) {
-            Thread.sleep(1);
             start = System.nanoTime();
-            charSequence.equals("AC");
-            times[count++] = System.nanoTime() - start;
+//        while(true)
+            if (charSequence.equals("AC"));
+            times[i] = System.nanoTime() - start;
         }
         Arrays.sort(times);
         System.out.printf("Average latency %d runs for 50/90/99/99.9/99.99%%/worst was %.2f/%.2f/%.2f/%.2f/%.2f/%.2f us%n",
