@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class CharSequencePerformance {
     public static void main(String[] args) {
         CharSequence charSequence = "";
-        int tests = 200000000;
+        int tests = 1000000;
         long[] times = new long[tests];
         long start;
         int count= 0;

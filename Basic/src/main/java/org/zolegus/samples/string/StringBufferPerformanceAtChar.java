@@ -18,6 +18,7 @@ public class StringBufferPerformanceAtChar {
         int count= 0;
         for (int i = 0; i < tests; i++) {
             start = System.nanoTime();
+//        while(true) {
             for (int j = 0; j < stringBuilder.length(); j++)
                 builderBuffer.put((byte) stringBuilder.charAt(j));
             times[count++] = System.nanoTime() - start;
