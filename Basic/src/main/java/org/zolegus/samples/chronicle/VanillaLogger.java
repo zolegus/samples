@@ -3,7 +3,6 @@ package org.zolegus.samples.chronicle;
 import net.openhft.chronicle.Chronicle;
 import net.openhft.chronicle.ExcerptTailer;
 import net.openhft.chronicle.VanillaChronicle;
-import net.openhft.chronicle.logger.ChronicleLog;
 import net.openhft.chronicle.logger.ChronicleLogEvent;
 import net.openhft.chronicle.logger.ChronicleLogHelper;
 import net.openhft.chronicle.logger.ChronicleLogLevel;
@@ -30,14 +29,19 @@ public class VanillaLogger {
     public static void main(String[] args) throws IOException {
         System.setProperty("slf4j.chronicle.properties", VanillaLogger.class.getClassLoader().getResource("slf4j.chronicle.vanilla.properties").getPath());
         ChronicleLoggerFactory clf = (ChronicleLoggerFactory) StaticLoggerBinder.getSingleton().getLoggerFactory();
-        clf.relaod();
-        logger = LoggerFactory.getLogger(VanillaLogger.class);
-        if (logger.getClass().equals(ChronicleLogger.class))
-            System.out.println("[equals]");
-        else
-            System.out.println("[not equals]");
 
-        writeBin();
+
+        clf.reload();
+        logger = LoggerFactory.getLogger(VanillaLogger.class);
+        if (!logger.getClass().equals(ChronicleLogger.class)) {
+            System.out.println("[not equals]");
+            return;
+        }
+
+        writeSimple();
+//        readSimple();
+//        readTracer();
+
 
         ((ChronicleLoggerFactory) StaticLoggerBinder.getSingleton().getLoggerFactory()).shutdown();
 //        IOTools.deleteDir(basePath(ChronicleLoggingConfig.TYPE_VANILLA));
@@ -100,24 +104,24 @@ public class VanillaLogger {
     }
 
     public static void writeBin() throws IOException {
-        final String testId    = "readwrite";
-        final String threadId  = testId + "-th";
-        final long   timestamp = System.currentTimeMillis();
-        final Logger logger    = LoggerFactory.getLogger(testId);
+        final String testId = "readwrite";
+        final String threadId = testId + "-th";
+        final long timestamp = System.currentTimeMillis();
+        final Logger logger = LoggerFactory.getLogger(testId);
 
-        IOTools.deleteDir(basePath(ChronicleLoggingConfig.TYPE_VANILLA,testId));
+        IOTools.deleteDir(basePath(ChronicleLoggingConfig.TYPE_VANILLA, testId));
         Thread.currentThread().setName(threadId);
 
-        for(ChronicleLogLevel level : LOG_LEVELS) {
-            log(logger,level,"level is {}",level);
+        for (ChronicleLogLevel level : LOG_LEVELS) {
+            log(logger, level, "level is {}", level);
         }
 
-        Chronicle chronicle = getVanillaChronicle(ChronicleLoggingConfig.TYPE_VANILLA,testId);
-        ExcerptTailer tailer    = chronicle.createTailer().toStart();
-        ChronicleLogEvent evt       = null;
+        Chronicle chronicle = getVanillaChronicle(ChronicleLoggingConfig.TYPE_VANILLA, testId);
+        ExcerptTailer tailer = chronicle.createTailer().toStart();
+        ChronicleLogEvent evt = null;
 
-        for(ChronicleLogLevel level : LOG_LEVELS) {
-            if(level != ChronicleLogLevel.TRACE) {
+        for (ChronicleLogLevel level : LOG_LEVELS) {
+            if (level != ChronicleLogLevel.TRACE) {
                 System.out.println(tailer.nextIndex());
                 evt = ChronicleLogHelper.decodeBinary(tailer);
                 System.out.println(evt);
@@ -135,8 +139,8 @@ public class VanillaLogger {
             }
         }
 
-        logger.debug("Throwable test",new UnsupportedOperationException());
-        logger.debug("Throwable test",new UnsupportedOperationException("Exception message"));
+        logger.debug("Throwable test", new UnsupportedOperationException());
+        logger.debug("Throwable test", new UnsupportedOperationException("Exception message"));
 
         System.out.println(tailer.nextIndex());
         evt = ChronicleLogHelper.decodeBinary(tailer);
@@ -158,12 +162,52 @@ public class VanillaLogger {
 //        IOTools.deleteDir(basePath(ChronicleLoggingConfig.TYPE_VANILLA,testId));
     }
 
-    public static void writeSimples() {
+    public static void writeSimple() {
         Logger logger = LoggerFactory.getLogger(VanillaLogger.class);
-        logger.info("Let's logs something");
+        for (int i = 0; i < 10000; i++) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            logger.warn("Let's logs something " + i);
+        }
+
+//        Logger text_logger = LoggerFactory.getLogger("text_logger");
+//        for (int i = 0; i < 100000; i++)
+//            text_logger.debug("Something major wrote here >> " + System.currentTimeMillis());
+
     }
 
-    public static void read () {
+    public static void readSimple() {
+        Chronicle chronicle = new VanillaChronicle("./logs/main");
+        ExcerptTailer tailer = null;
+        try {
+            tailer = chronicle.createTailer().toStart();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (tailer.nextIndex()) {
 
+            ChronicleLogEvent evt = ChronicleLogHelper.decodeBinary(tailer);
+            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(evt.getTimeStamp()) + " [" + evt.getLevel().toString() + "] " + evt.getMessage());
+        }
+        System.out.println("Reading ended");
+    }
+
+    public static void readTracer() {
+        Chronicle chronicle = new VanillaChronicle("./logs/text_logger");
+        ExcerptTailer tailer = null;
+        try {
+            tailer = chronicle.createTailer().toStart();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (tailer.nextIndex()) {
+//            ChronicleLogEvent evt = ChronicleLogHelper.decodeBinary(tailer);
+            ChronicleLogEvent evt = ChronicleLogHelper.decodeText(tailer);
+            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(evt.getTimeStamp()) + " [" + evt.getLevel().toString() + "] " + evt.getMessage());
+        }
+        System.out.println("Reading ended");
     }
 }
