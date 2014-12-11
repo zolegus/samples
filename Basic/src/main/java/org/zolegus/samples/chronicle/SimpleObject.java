@@ -18,11 +18,10 @@ public class SimpleObject {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         String basePath = System.getProperty("java.io.tmpdir") + "/data";
-        //ChronicleTools.deleteOnExit(basePath);
+        ChronicleTools.deleteOnExit(basePath);
 
         IndexedChronicle chronicle = new IndexedChronicle(basePath);
         ExcerptAppender appender = chronicle.createAppender();
-
 
         // write one object
         Thread thread = new Thread(new Runnable() {
