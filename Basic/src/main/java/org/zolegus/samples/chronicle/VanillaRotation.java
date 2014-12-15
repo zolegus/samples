@@ -68,7 +68,7 @@ public class VanillaRotation {
 //        config.indexBlockSize(1 * 1024 * 1024);
 
             config.cycleFormat("yyyyMMdd_HHmmss");
-        config.cycleLength(1000, false);
+//        config.cycleLength(1000, false);
 //        config.entriesPerCycle(1L << 16);
 //        config.indexBlockSize(16L << 10);
 

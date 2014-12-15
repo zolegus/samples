@@ -29,12 +29,10 @@ public class VanillaLogger {
     public static void main(String[] args) throws IOException {
         System.setProperty("slf4j.chronicle.properties", VanillaLogger.class.getClassLoader().getResource("slf4j.chronicle.vanilla.properties").getPath());
         ChronicleLoggerFactory clf = (ChronicleLoggerFactory) StaticLoggerBinder.getSingleton().getLoggerFactory();
-
-
         clf.reload();
         logger = LoggerFactory.getLogger(VanillaLogger.class);
         if (!logger.getClass().equals(ChronicleLogger.class)) {
-            System.out.println("[not equals]");
+            System.out.println("Chronicle logger implementation not found");
             return;
         }
 
