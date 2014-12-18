@@ -3,7 +3,6 @@ package org.zolegus.samples.chronicle;
 import net.openhft.chronicle.Chronicle;
 import net.openhft.chronicle.ChronicleQueueBuilder;
 import net.openhft.chronicle.ExcerptAppender;
-import net.openhft.chronicle.VanillaChronicle;
 
 import java.io.IOException;
 

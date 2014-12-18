@@ -21,7 +21,7 @@ public class VanillaChronicleTest extends TestCase {
     @Before
     public void setUp() throws Exception {
 //        String baseDir = System.getProperty("java.io.tmpdir") + "/performance-logger";
-        String baseDir = "/mnt/ramdisk/logs";
+        String baseDir = "./logs";
         ChronicleTools.deleteDirOnExit(baseDir);
 //        chronicle = new VanillaChronicle(baseDir);
         chronicle = ChronicleQueueBuilder.VanillaChronicleQueueBuilder.vanilla(baseDir).build();
@@ -84,10 +84,9 @@ public class VanillaChronicleTest extends TestCase {
                     appender.startExcerpt();
                     appender.writeLong(666l);
                     appender.writeInt(20);
-                    appender.append("worker");
-                    appender.append(message);
-
-
+                    appender.writeChar('M');
+//                    appender.append("worker");
+//                    appender.append(message);
 //                    appender.append(777l);
 //                    appender.writeLong(888l);
 //                    appender.write(message.getBytes());
