@@ -1,9 +1,6 @@
 package org.zolegus.samples.chronicle;
 
-import net.openhft.chronicle.ExcerptAppender;
-import net.openhft.chronicle.ExcerptTailer;
-import net.openhft.chronicle.VanillaChronicle;
-import net.openhft.chronicle.VanillaChronicleConfig;
+import net.openhft.chronicle.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,19 +57,20 @@ public class VanillaRotation {
 
 // Create with small data and index sizes so that the test frequently
 // generates new files
-        VanillaChronicleConfig config = new VanillaChronicleConfig();
+//        VanillaChronicleConfig config = new VanillaChronicleConfig();
 //        config.cycleFormat("yyyy-MM-dd-HH:mm:ss");
 //        config.cycleLength(60 * 1000, false);
 //        config.entriesPerCycle(512 * 1024);
 //        config.dataBlockSize(4 * 1024 * 1024);
 //        config.indexBlockSize(1 * 1024 * 1024);
 
-            config.cycleFormat("yyyyMMdd_HHmmss");
+//            config.cycleFormat("yyyyMMdd_HHmmss");
 //        config.cycleLength(1000, false);
 //        config.entriesPerCycle(1L << 16);
 //        config.indexBlockSize(16L << 10);
 
-        final VanillaChronicle chronicle = new VanillaChronicle(baseDir, config);
+        final Chronicle chronicle = ChronicleQueueBuilder.VanillaChronicleQueueBuilder.vanilla(baseDir).build();
+        //final VanillaChronicle chronicle = new VanillaChronicle(baseDir, config);
         chronicle.clear();
         try {
             ExcerptAppender appender = chronicle.createAppender();
@@ -104,7 +102,7 @@ public class VanillaRotation {
                                 ", finished = " + tailer.isFinished());
             }
             appender.close();
-            chronicle.checkCounts(1, 1);
+//            chronicle.checkCounts(1, 1);
         } finally {
             chronicle.close();
         }
