@@ -1,7 +1,11 @@
 package org.zolegus.samples.datetime;
 
+import javax.crypto.Cipher;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.TimeZone;
 
 /**
@@ -9,11 +13,22 @@ import java.util.TimeZone;
  */
 public class LocalTimestamp {
     public static void main(String[] args) throws InterruptedException {
+        TimeZone SysLocal = TimeZone.getDefault();
         TimeZone GMT = TimeZone.getTimeZone("GMT");
+        TimeZone Chicago = TimeZone.getTimeZone("America/Chicago");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-//        format.setTimeZone(GMT);
+
         for (int i = 0; i < 100; i++) {
-            System.out.println(format.format(System.currentTimeMillis()) + " " + LocalDateTime.now().toString());
+            long timestamp = System.currentTimeMillis();
+            System.out.println("System:" + timestamp + ", UTC:" + Clock.systemUTC().millis());
+            format.setTimeZone(SysLocal);
+            System.out.println("Timezone " + format.getTimeZone().getDisplayName() + ": " + format.format(timestamp).toString());
+            format.setTimeZone(GMT);
+            System.out.println("Timezone " + format.getTimeZone().getDisplayName() + ": " + format.format(timestamp).toString());
+            format.setTimeZone(Chicago);
+            System.out.println("Timezone " + format.getTimeZone().getDisplayName() + ": " + format.format(timestamp).toString());
+            LocalDateTime dt = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), Chicago.toZoneId());
+            System.out.println("LDT Chicago: " + dt.toString());
             Thread.sleep(1000);
         }
     }
