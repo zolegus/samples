@@ -27,9 +27,15 @@ public class LocalTimestamp {
             System.out.println("Timezone " + format.getTimeZone().getDisplayName() + ": " + format.format(timestamp).toString());
             format.setTimeZone(Chicago);
             System.out.println("Timezone " + format.getTimeZone().getDisplayName() + ": " + format.format(timestamp).toString());
-            LocalDateTime dt = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), Chicago.toZoneId());
-            System.out.println("LDT Chicago: " + dt.toString());
+            LocalDateTime chicagoDT = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), Chicago.toZoneId());
+            System.out.println("LDT Chicago: " + chicagoDT.toString());
+            //Reverse
+            LocalDateTime localDT = LocalDateTime.now();
+            System.out.println(timestamp + " = " + chicagoDT.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli());
+            System.out.println(timestamp + " = " + localDT.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
             Thread.sleep(1000);
+
+
         }
     }
 }
