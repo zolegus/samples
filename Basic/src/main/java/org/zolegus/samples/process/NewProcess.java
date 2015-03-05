@@ -1,5 +1,6 @@
 package org.zolegus.samples.process;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
@@ -8,7 +9,9 @@ import java.lang.reflect.Field;
  */
 public class NewProcess {
     public static void main(String[] args) throws IOException {
-        Process proc = Runtime.getRuntime().exec("/home/zolegus/dev/java/codes/zolegus.com/quote-collector/build/install/quote-collector/bin/./quote-collector");
+        String path = "/home/zolegus/dev/java/codes/zolegus.com/quote-collector/build/install/quote-collector/bin";
+        String program = "./quote-collector";
+        Process proc = Runtime.getRuntime().exec(program, null, new File(path));
         try {
             Field f = proc.getClass().getDeclaredField("pid");
             f.setAccessible(true);
@@ -16,9 +19,6 @@ public class NewProcess {
             System.out.println("Started pid=" + pid);
         } catch (Throwable e) {
         }
-
-
-
 //        Runtime rt = Runtime.getRuntime();
 //        String[] commands = {"system.exe","-get t"};
 //        Process proc = rt.exec(commands);
