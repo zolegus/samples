@@ -30,12 +30,10 @@ public class LocalTimestamp {
             LocalDateTime chicagoDT = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), Chicago.toZoneId());
             System.out.println("LDT Chicago: " + chicagoDT.toString());
             //Reverse
-            LocalDateTime localDT = LocalDateTime.now();
-            System.out.println(timestamp + " = " + chicagoDT.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli());
-            System.out.println(timestamp + " = " + localDT.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+            long chicago_timestamp = chicagoDT.atZone(Chicago.toZoneId()).toInstant().toEpochMilli();
+            System.out.println(timestamp + " = " + chicago_timestamp);
+            System.out.println(System.currentTimeMillis() + " = " + LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
             Thread.sleep(1000);
-
-
         }
     }
 }
